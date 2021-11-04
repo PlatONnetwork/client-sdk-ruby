@@ -19,7 +19,7 @@ balance = res / 10**18.to_f
 puts "#{TARGET_ADDRESS_1} #{client.hrp.upcase} balance: #{balance} "
 
 ###Get Arc20/Prc20 balance
-client.default_account = Platon::Key.new.bech32_address  # 随机生成地址并指定即可。 因platon节点要求call也必须传入from参数
+client.default_account = Platon::Key.new.bech32_address(hrp: "atp")  # 随机生成地址并指定即可。 因platon节点要求call也必须传入from参数
 minABI=[{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"type":"function"}];
 contract = Platon::Contract.create(
 	client:client, 
