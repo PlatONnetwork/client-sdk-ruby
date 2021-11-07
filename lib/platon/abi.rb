@@ -2,14 +2,14 @@ module Platon
   class Abi
 
     def self.parse_abi(abi)
-      constructor = abi.detect {|x| x["type"] == "constructor"}
+      constructor = abi.detect { |x| constructor?(x) }
       if constructor.present?
         constructor_inputs = constructor["inputs"].map { |input| Platon::FunctionInput.new(input) }
       else
         constructor_inputs = []
       end
-      functions = abi.select {|x| x["type"] == "function" }.map { |fun| Platon::Function.new(fun) }
-      events = abi.select {|x| x["type"] == "event" }.map { |evt| Platon::ContractEvent.new(evt) }
+      functions = abi.select { |x| function?(x) }.map { |fun| Platon::Function.new(fun) }
+      events = abi.select { |x| event?(x) }.map { |evt| Platon::ContractEvent.new(evt) }
       [constructor_inputs, functions, events]
     end
 
@@ -26,6 +26,20 @@ module Platon
       else
         [false, nil, nil]
       end
+    end
+
+    private
+
+    def self.constructor?(tuple)
+      (tuple["type"] == "constructor") || (tuple["name"] == "initialize")
+    end
+
+    def self.function?(tuple)
+      (tuple["type"] == "function") && (tuple["name"] != "initialize")
+    end
+
+    def self.event?(tuple)
+      tuple["type"] == "event"
     end
 
   end

@@ -34,6 +34,7 @@ module Platon
 
     def set_network(network) 
       config = {
+        platon: {hrp:"lat", chain_id:100},
         platondev: {hrp: "lat", chain_id: 210309},
         alaya:{hrp:"atp",chain_id:201018} ,
         alayadev:{hrp:"atp",chain_id: 201030}
